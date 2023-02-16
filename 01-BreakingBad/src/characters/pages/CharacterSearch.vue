@@ -7,7 +7,3 @@
         <h1>CharacterSearch</h1>
     </div>
 </template>
-
-<style scoped>
-
-</style>
