@@ -27,7 +27,8 @@ export const useCharacters = () =>{
             hasError.value = true;
             isLoading.value = false;
             if( axios.isAxiosError(error) ){
-                return errorMessage.value = error.message;
+                errorMessage.value = error.message;
+                return;
             }else{
                 errorMessage.value = JSON.stringify(error);
             }

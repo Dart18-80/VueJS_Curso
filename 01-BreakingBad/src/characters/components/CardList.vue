@@ -1,7 +1,4 @@
 <script setup lang="ts">
-/*import { ref } from 'vue';
-import breakingBadApi from '@/api/breakingBadApi';
-import type { Character } from '../interface/Character';*/
 import { useCharacters } from '@/characters/composables/useCharacters'
 
 const {isLoading, characters, hasError, errorMessage} = useCharacters();
