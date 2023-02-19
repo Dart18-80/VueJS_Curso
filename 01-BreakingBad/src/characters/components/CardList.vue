@@ -1,17 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import CharacterCard from '@/characters/components/CharacterCard.vue';
-import breakingBadApi from '@/api/breakingBadApi';
+import type { Character } from '@/characters/interface/Character';
+
+interface Props {
+    characters: Character[],
+}
+
+const props = defineProps<Props>();
+/* import { ref } from 'vue'; */
+/* import breakingBadApi from '@/api/breakingBadApi';
 import type { Character } from '@/characters/interface/Character';
 import { useCharacters } from '@/characters/composables/useCharacters';
-import { useQuery } from '@tanstack/vue-query';
+import { useQuery } from '@tanstack/vue-query'; */
 //! 1- Normal suspense
 // const { data: characters } = await breakingBadApi.get<Character[]>('/characters');
 // const characters = ref<Character[]>( data );
 //! 2- Composable functions
 // const { isLoading, characters, hasError, errorMessage } = useCharacters();
 //! 3- TanStack Query
-const getCharactersSlow = async():Promise<Character[]> => {
+/* const getCharactersSlow = async():Promise<Character[]> => {
     return new Promise( (resolve) => {
         setTimeout( async() => {
             const { data } = await breakingBadApi.get<Character[]>('/characters');
@@ -26,14 +33,12 @@ const { isLoading, isError, data: characters, error } = useQuery(
         cacheTime: 1000 * 60,
         refetchOnReconnect: 'always'
     }
-);
+); */
 </script>
 <template>
-    <h1 v-if="isLoading">Loading...</h1>
-    
     <div class="card-list">
         <CharacterCard
-            v-for="character of characters"
+            v-for="character of props.characters"
             :key="character.char_id"
             :character="character"
         />

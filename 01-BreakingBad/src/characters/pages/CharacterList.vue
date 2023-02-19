@@ -1,12 +1,24 @@
 <script setup lang="ts">
-import CardList from '@/characters/components/CardList.vue'; 
+
+import CardList from '@/characters/components/CardList.vue';
+import useCharacter from '@/characters/composables/useCharacters'; 
 
 const props = defineProps<{ title: string, visible: boolean}>();
-console.log(props)
+
+const { isLoading, hasError, errorMessage, characters, count} = useCharacter();
+
 </script>
 
 <template>
-    <h2>{{ props.title }}</h2>
+    <h1 v-if="isLoading">Loading...</h1>
 
-    <CardList />
+    <div v-else-if="hasError">
+        <h1>Error de Carga</h1>
+        <p>{{ errorMessage }}</p>
+    </div>
+
+    <template v-else>
+        <h2>{{ props.title }} - ({{ count }})</h2>
+        <CardList :characters="characters || []" />
+    </template>
 </template>

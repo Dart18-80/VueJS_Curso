@@ -2,7 +2,7 @@ export interface Character {
     char_id:                     number;
     name:                        string;
     birthday:                    string;
-    occupation:                  string;
+    occupation:                  string[];
     img:                         string;
     status:                      Status;
     nickname:                    string;

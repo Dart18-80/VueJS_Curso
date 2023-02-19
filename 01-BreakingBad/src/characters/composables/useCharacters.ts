@@ -1,44 +1,57 @@
-import {  onMounted, ref } from 'vue';
-import axios from 'axios';
-import type { Character } from '../interface/Character';
+//Librerias Vue
+import { computed, ref } from 'vue';
+import { useQuery } from '@tanstack/vue-query';
+
+//Interfaces
+import type { Character } from '@/characters/interface/Character';
+
+//Api
 import breakingBadApi from '@/api/breakingBadApi';
 
-const characters = ref<Character[]>([]);
-const isLoading = ref<boolean>(true);
-const hasError = ref<boolean>(false);
-const errorMessage = ref<string>();
 
-export const useCharacters = () =>{
 
-    onMounted( async () => {
-        await loadCharacters();
-    })
+const characters = ref<Character[]>([])
+const isLoading = ref<boolean>(false);
+const hasError = ref<boolean>(false); 
+const errorMessage = ref<string | null>(null); 
 
-    const loadCharacters = async () => {
+const getCharacters = async (): Promise<Character[]> => {
 
-        if( characters.value.length > 0 ) return;
-
-        isLoading.value = true;
-        try{
-            const { data } = await breakingBadApi.get<Character[]>('/characters');
-            characters.value = data;
-            isLoading.value = false;
-        }catch (error ){
-            hasError.value = true;
-            isLoading.value = false;
-            if( axios.isAxiosError(error) ){
-                errorMessage.value = error.message;
-                return;
-            }else{
-                errorMessage.value = JSON.stringify(error);
-            }
-        }
+    if( characters.value.length > 0 ) {
+        return characters.value;
     }
+
+    const { data } = await breakingBadApi.get<Character[]>('/characters');
+    return data;
+}
+
+const loadedCharacters = ( data: Character[]) => {
+    hasError.value = false;
+    errorMessage.value = null;
+    characters.value = data.filter( character => ![14, 17, 39].includes(character.char_id));
+}
+
+const useCharacter = () => {
+
+    useQuery(
+        ['characters'],
+        getCharacters,
+        {
+            onSuccess: loadedCharacters,
+        }
+    ); 
 
     return{
-        characters,
-        isLoading,
+        //Propeties
+        characters, 
+        errorMessage,
         hasError,
-        errorMessage
+        isLoading,
+
+        //Getters
+        count: computed( () => characters.value.length),
+        //Methods
     }
 }
+
+export default useCharacter
