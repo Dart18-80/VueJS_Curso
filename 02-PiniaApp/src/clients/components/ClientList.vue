@@ -16,7 +16,7 @@ const props = defineProps<Props>();
             :key="client.id">
             <RouterLink :to="{
                 name: 'client-id',
-                params: { id: 1}
+                params: { id: client.id}
             }">
                 {{ client.name }}
             </RouterLink>

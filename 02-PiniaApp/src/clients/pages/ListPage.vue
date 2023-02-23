@@ -28,7 +28,3 @@ const { isLoading, clients, getPage, totalPages ,currentPage } = useClients();
         <LoadingModal v-if="isLoading" />
     </div>
 </template>
-
-<style scoped>
-
-</style>

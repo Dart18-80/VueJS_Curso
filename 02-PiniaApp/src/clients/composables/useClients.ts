@@ -26,15 +26,13 @@ const useClients = () => {
     const { isLoading, data } =  useQuery(
         ['clients?page=', currentPage],
         () => getClients( currentPage.value ),
-        {
-            //staleTime: 1000 * 60,
-        }
+        { retry: false }
     );
 
     watch( data, clients => {
         if( clients )
             ClientStore.setClients( clients );
-    });
+    }, { immediate: true });
 
     return {
         clients,
